@@ -1,15 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
+
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
-from login.models import CustomUser
 from django.contrib.auth.views import LogoutView
-from django.shortcuts import render
-from django import forms
 from django.shortcuts import render, redirect
-from .forms import SignupForm
+from login.forms import SignUpForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
 
@@ -29,23 +22,26 @@ def home(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = CustomUser.objects.create_user(username=username, password=password)
+            print("Form is valid")  # Debug statement
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('home')  #
+            return redirect('login')
+        else:
+            print(form.errors)  # Debug statement
     else:
-        form = SignupForm()
+        form = SignUpForm()
 
+    # Render the signup page with the form, including any error messages
     return render(request, 'signup.html', {'form': form})
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput)
 
+    # Render the signup page with the form, including any error messages
+    return render(request, 'signup.html', {'form': form})
 class CustomLoginView(LoginView):
     template_name = 'home.html'
 

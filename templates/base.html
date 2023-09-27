@@ -3,8 +3,11 @@
     <head>
         <title>LITRevu</title>
     </head>
-
     <body>
-        {% block content %}{% endblock content %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">

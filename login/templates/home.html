@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LITReviews</title>
+    <style>
+        /* Style for the logout link/button */
+        .logout {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>LITReviews</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.username.label_tag }} {{ form.username }}
-        {{ form.password.label_tag }} {{ form.password }}
-        <button type="submit">Log In</button>
-    </form>
-    <a href="{% url 'signup' %}" class="btn">Sign Up</a> <!-- Transformez en un bouton avec une classe CSS -->
+    {% if user.is_authenticated %}
+        <div class="logout">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+        <h1>Welcome to LITReviews</h1>
+        <p>Welcome, {{ user.username }}!</p>
+    {% else %}
+        <h1>Welcome to LITReviews</h1>
+        <p>Welcome, Guest!</p>
+    {% endif %}
 </body>
 </html>
+
+
