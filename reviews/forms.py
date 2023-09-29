@@ -1,7 +1,13 @@
 from django import forms
-from .models import Ticket
+from .models import BookReviewTicket
+from .models import BookReview
 
-class TicketForm(forms.ModelForm):
+class BookReviewTicketForm(forms.ModelForm):
     class Meta:
-        model = Ticket
-        fields = ['titre', 'description', 'image']
+        model = BookReviewTicket
+        fields = ['book_title', 'book_author', 'text', 'book_image']
+
+class BookReviewForm(forms.ModelForm):
+    class Meta:
+        model = BookReview
+        fields = ['title', 'rating', 'text']

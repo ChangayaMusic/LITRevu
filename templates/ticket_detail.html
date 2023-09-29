@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Détail du Ticket</h1>
+  <h2>{{ ticket.title }}</h2>
+  <p>Auteur du Ticket : {{ ticket.author }}</p>
+  <p>Date et Heure de Création : {{ ticket.created_at }}</p>
+  <p>Livre : {{ ticket.book_title }} par {{ ticket.book_author }}</p>
+  <p>Description du Ticket : {{ ticket.text }}</p>
+  <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>
+  <a href="{% url 'create_book_review' %}">Répondre avec une Critique</a>
+{% endblock %}

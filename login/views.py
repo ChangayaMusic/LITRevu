@@ -17,7 +17,7 @@ def home(request):
     else:
         form = AuthenticationForm(request)
 
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'combined_list.html', {'form': form})
 
 
 def signup(request):

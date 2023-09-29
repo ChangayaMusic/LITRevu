@@ -1,20 +1,30 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
+from login.models import CustomUser
 
-from django.db import models
+class BookReviewTicket(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='review_tickets')
+    created_date = models.DateTimeField(auto_now_add=True)
+    book_title = models.CharField(max_length=255)
+    book_author = models.CharField(max_length=255)
+    text = models.TextField()
+    book_image = models.ImageField(upload_to='book_images/')
 
+    def __str__(self):
+        return self.book_title
+class BookReview(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=255)
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    text = models.TextField()
+    ticket = models.ForeignKey(BookReviewTicket, on_delete=models.CASCADE)
 
-class Ticket(models.Model):
-    titre = models.CharField(max_length=100)
-    description = models.TextField()
-    image = models.ImageField(upload_to='tickets/')  # Assurez-vous d'avoir installé Pillow pour gérer les images
-
-    # Autres champs si nécessaire
-
-
+    def __str__(self):
+        return self.title
 class Review(models.Model):
-    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(to=BookReviewTicket, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)])
     headline = models.CharField(max_length=128)
