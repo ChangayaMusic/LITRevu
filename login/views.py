@@ -1,23 +1,11 @@
 
-from django.contrib.auth.forms import AuthenticationForm
+from typing import Any
+from django.db.models.query import QuerySet
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from login.forms import SignUpForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
-
-def home(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-
-            login(request, form.get_user())
-
-            return redirect('confirmation')
-    else:
-        form = AuthenticationForm(request)
-
-    return render(request, 'combined_list.html', {'form': form})
 
 
 def signup(request):
@@ -39,9 +27,6 @@ def signup(request):
     # Render the signup page with the form, including any error messages
     return render(request, 'signup.html', {'form': form})
 
-
-    # Render the signup page with the form, including any error messages
-    return render(request, 'signup.html', {'form': form})
 class CustomLoginView(LoginView):
     template_name = 'home.html'
 

@@ -13,6 +13,7 @@ class BookReviewTicket(models.Model):
 
     def __str__(self):
         return self.book_title
+
 class BookReview(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -23,18 +24,6 @@ class BookReview(models.Model):
 
     def __str__(self):
         return self.title
-class Review(models.Model):
-    ticket = models.ForeignKey(to=BookReviewTicket, on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(5)])
-    headline = models.CharField(max_length=128)
-    body = models.CharField(max_length=8192, blank=True)
-    user = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    time_created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Review by {self.user.username} for {self.ticket.title}"
 
 class UserFollows(models.Model):
     user = models.ForeignKey(
