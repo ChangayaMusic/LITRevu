@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from .views import HomeListView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/', HomeListView.as_view(), name='home'),
@@ -13,3 +15,5 @@ urlpatterns = [
     path('combined_list/', views.combined_list, name='combined_list'),
     path('ticket-confirmation/', views.ticket_confirmation, name='ticket_confirmation'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

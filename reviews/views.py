@@ -43,15 +43,19 @@ def ticket_detail(request, ticket_id):
     # Retrieve the book review ticket object or return a 404 error if it doesn't exist
     ticket = get_object_or_404(BookReviewTicket, pk=ticket_id)
 
-    return render(request, 'book_review_ticket_detail.html', {'ticket': ticket})
+    return render(request, 'ticket_detail.html', {'ticket': ticket})
 
 
     return render(request, 'ticket_detail.html', {'ticket': ticket})
-def book_review_detail(request, pk):
-    # Retrieve the specific book review using the primary key (pk)
-    book_review = get_object_or_404(BookReview, pk=pk)
+def book_review_detail(request, review_id):
+    # Récupérer la critique (BookReview) associée à l'identifiant review_id
+    review = get_object_or_404(BookReview, id=review_id)
 
-    return render(request, 'book_review_detail.html', {'book_review': book_review})
+    # Récupérer le ticket (BookReviewTicket) associé à la critique
+    ticket = review.ticket
+
+    # Vous pouvez maintenant passer review et ticket à votre template
+    return render(request, 'book_review_detail.html', {'review': review, 'ticket': ticket})
 
 @login_required
 def create_book_review_ticket(request):
@@ -71,19 +75,25 @@ def create_book_review_ticket(request):
 def ticket_confirmation(request):
     return render(request, 'ticket_confirmation.html')
 @login_required
-def create_book_review(request, ticket_id):
-    ticket = BookReviewTicket.objects.get(pk=ticket_id)
-
+def create_book_review(request):
     if request.method == 'POST':
-        form = BookReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
+        ticket_form = BookReviewTicketForm(request.POST, request.FILES)
+        review_form = BookReviewForm(request.POST)
+        if ticket_form.is_valid() and review_form.is_valid():
+            # Créez un objet BookReviewTicket
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+
+            # Créez un objet BookReview lié au ticket
+            review = review_form.save(commit=False)
             review.author = request.user
             review.ticket = ticket
             review.save()
-            return redirect('ticket_detail', ticket_id=ticket.id)
 
+            return redirect('combined_list')
     else:
-        form = BookReviewForm()
+        ticket_form = BookReviewTicketForm()
+        review_form = BookReviewForm()
 
-    return render(request, 'create_book_review.html', {'form': form, 'ticket': ticket})
+    return render(request, 'create_book_review.html', {'ticket_form': ticket_form, 'review_form': review_form})

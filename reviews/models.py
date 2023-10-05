@@ -2,6 +2,20 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
 from login.models import CustomUser
+import os
+
+def book_image_path(instance, filename):
+    # Obtenez le nom du fichier d'origine
+    original_filename = filename
+
+    # Obtenez le titre du livre de l'instance
+    book_title = instance.book_title
+
+    # Générez le nouveau nom de fichier en utilisant le titre du livre et l'extension d'origine
+    new_filename = f"{book_title}.{original_filename.split('.')[-1]}"
+
+    # Retournez le chemin complet du fichier
+    return os.path.join('book_images', new_filename)
 
 class BookReviewTicket(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='review_tickets')
@@ -9,7 +23,7 @@ class BookReviewTicket(models.Model):
     book_title = models.CharField(max_length=255)
     book_author = models.CharField(max_length=255)
     text = models.TextField()
-    book_image = models.ImageField(upload_to='book_images/')
+    book_image = models.ImageField(upload_to=book_image_path)
 
     def __str__(self):
         return self.book_title

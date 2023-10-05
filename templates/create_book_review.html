@@ -1,11 +1,13 @@
+<!-- create_book_review.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Créer une Nouvelle Critique de Livre</h1>
-  <form method="post">
+  <h1>Créer une Critique</h1>
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer la Critique</button>
+    {{ ticket_form.as_p }}
+    {{ review_form.as_p }}
+    <button type="submit">Soumettre</button>
   </form>
-  <a href="{% url 'book_review_list' %}">Retour à la Liste des Critiques</a>
+  <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>
 {% endblock %}
