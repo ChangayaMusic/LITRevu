@@ -15,6 +15,8 @@ urlpatterns = [
     path('combined_list/', views.combined_list, name='combined_list'),
     path('ticket-confirmation/', views.ticket_confirmation, name='ticket_confirmation'),
     path('manage_followers/', views.manage_followers, name='manage_followers'),
+    path('response_review/<int:ticket_id>/', views.response_review, name='response_review'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

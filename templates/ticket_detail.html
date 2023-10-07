@@ -10,5 +10,5 @@
   <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" />
 
   <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>
-  <a href="{% url 'create_book_review' %}">Répondre avec une Critique</a>
+  <a href="{% url 'response_review' ticket.id %}">Répondre avec une Critique</a>
 {% endblock %}

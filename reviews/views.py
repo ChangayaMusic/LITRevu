@@ -2,7 +2,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, UserFollows
 
@@ -130,3 +130,29 @@ def manage_followers(request):
     followers = UserFollows.objects.filter(followed_user=request.user)
 
     return render(request, 'manage_followers.html', {'following': following, 'followers': followers})
+
+def response_review(request, ticket_id):
+    # Récupérer l'objet Ticket en fonction de l'ID
+    ticket = get_object_or_404(BookReviewTicket, pk=ticket_id)
+
+    if request.method == 'POST':
+        # Si le formulaire est soumis, traiter les données du formulaire
+        form = BookReviewForm(request.POST)
+        if form.is_valid():
+            # Si le formulaire est valide, enregistrez la critique associée au ticket
+            review = form.save(commit=False)
+            review.author = request.user  # Vous devrez peut-être ajuster cela en fonction de la manière dont vous gérez les auteurs
+            review.ticket = ticket
+            review.save()
+
+            # Enregistrez le message flash de succès
+            messages.success(request, 'Votre critique a été enregistrée avec succès.')
+
+            # Redirigez l'utilisateur vers une page de confirmation ou ailleurs
+            return redirect('ticket_detail', ticket_id=ticket_id)
+    else:
+        # Si c'est une requête GET, affichez le formulaire vide
+        form = BookReviewForm()
+
+    # Affichez la page de réponse avec le formulaire
+    return render(request, 'response_review.html', {'form': form, 'ticket': ticket})
