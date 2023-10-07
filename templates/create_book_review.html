@@ -5,8 +5,13 @@
   <h1>Créer une Critique</h1>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ ticket_form.as_p }}
-    {{ review_form.as_p }}
+
+    <!-- Formulaire de Ticket -->
+    {% if ticket_form %}
+      {{ ticket_form.as_p }}
+    {% endif %}
+
+    {{ form.as_p }}
     <button type="submit">Soumettre</button>
   </form>
   <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>

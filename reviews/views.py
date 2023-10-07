@@ -2,8 +2,9 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
-from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
+from .models import CustomUser, UserFollows
 
 from .models import BookReviewTicket, BookReview
 from .forms import BookReviewTicketForm, BookReviewForm
@@ -76,24 +77,56 @@ def ticket_confirmation(request):
     return render(request, 'ticket_confirmation.html')
 @login_required
 def create_book_review(request):
-    if request.method == 'POST':
-        ticket_form = BookReviewTicketForm(request.POST, request.FILES)
-        review_form = BookReviewForm(request.POST)
-        if ticket_form.is_valid() and review_form.is_valid():
-            # Créez un objet BookReviewTicket
-            ticket = ticket_form.save(commit=False)
-            ticket.user = request.user
-            ticket.save()
+    ticket_id = request.GET.get('ticket_id')
+    ticket = None
 
-            # Créez un objet BookReview lié au ticket
-            review = review_form.save(commit=False)
+    if ticket_id:
+        ticket = get_object_or_404(BookReviewTicket, id=ticket_id)
+
+    if request.method == 'POST':
+        if ticket:
+            ticket_form = BookReviewTicketForm(request.POST, instance=ticket)
+            form = BookReviewForm(request.POST)
+        else:
+            ticket_form = BookReviewTicketForm(request.POST)
+            form = BookReviewForm(request.POST)
+
+        if form.is_valid() and ticket_form.is_valid():
+            if not ticket:
+                ticket = ticket_form.save(commit=False)
+                ticket.user = request.user
+                ticket.save()
+
+            review = form.save(commit=False)
             review.author = request.user
             review.ticket = ticket
             review.save()
-
-            return redirect('combined_list')
+            return redirect('ticket_list')
     else:
-        ticket_form = BookReviewTicketForm()
-        review_form = BookReviewForm()
+        if ticket:
+            ticket_form = BookReviewTicketForm(instance=ticket)
+        else:
+            ticket_form = BookReviewTicketForm()
+        form = BookReviewForm()
 
-    return render(request, 'create_book_review.html', {'ticket_form': ticket_form, 'review_form': review_form})
+    return render(request, 'create_book_review.html', {'form': form, 'ticket_form': ticket_form})
+
+
+
+@login_required
+def manage_followers(request):
+    if request.method == 'POST':
+        # Récupérez le nom de l'utilisateur à suivre depuis le formulaire
+        username_to_follow = request.POST.get('username_to_follow')
+        # Recherchez l'utilisateur avec ce nom
+        user_to_follow = CustomUser.objects.filter(username=username_to_follow).first()
+        if user_to_follow:
+            # Créez une relation de suivi entre l'utilisateur connecté et l'utilisateur cible
+            UserFollows.objects.get_or_create(user=request.user, followed_user=user_to_follow)
+
+    # Récupérez les utilisateurs suivis par l'utilisateur connecté
+    following = UserFollows.objects.filter(user=request.user)
+    # Récupérez les utilisateurs qui suivent l'utilisateur connecté
+    followers = UserFollows.objects.filter(followed_user=request.user)
+
+    return render(request, 'manage_followers.html', {'following': following, 'followers': followers})
