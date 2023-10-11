@@ -4,7 +4,7 @@
   <h1>Détail du Ticket</h1>
   <h2>{{ ticket.title }}</h2>
   <p>Auteur du Ticket : {{ ticket.user }}</p>
-  <p>Date et Heure de Création : {{ ticket.created_date }}</p>
+  <p>Date et Heure de Création : {{ ticket.date }}</p>
   <p>Livre : {{ ticket.book_title }} par {{ ticket.book_author }}</p>
   <p>Description du Ticket : {{ ticket.text }}</p>
   <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" />

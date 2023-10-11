@@ -19,7 +19,7 @@ def book_image_path(instance, filename):
 
 class BookReviewTicket(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='review_tickets')
-    created_date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     book_title = models.CharField(max_length=255)
     book_author = models.CharField(max_length=255)
     text = models.TextField()
@@ -30,7 +30,7 @@ class BookReviewTicket(models.Model):
 
 class BookReview(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     text = models.TextField()

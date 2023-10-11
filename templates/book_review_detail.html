@@ -5,6 +5,7 @@
   <h1>Détails de la Critique</h1>
 
   <h2>{{ review.title }}</h2>
+  <p>Date de Création de la review : {{ review.date }}</p>
   <p>Auteur de la Critique : {{ review.author }}</p>
   <p>Évaluation : {{ review.rating }}/5</p>
   <p>Commentaire : {{ review.text }}</p>
@@ -12,7 +13,7 @@
   <h2>Informations sur le Ticket</h2>
   <p>Titre du Ticket : {{ ticket.book_title }}</p>
   <p>Auteur du Ticket : {{ ticket.user }}</p>
-  <p>Date de Création du Ticket : {{ ticket.created_date }}</p>
+  <p>Date de Création du Ticket : {{ ticket.date }}</p>
   <p>Description du Ticket : {{ ticket.text }}</p>
     <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}">
 
