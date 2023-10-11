@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
-
+{% load custom_filters %}
 {% block content %}
   <h1>Liste des Tickets et Critiques de Livres</h1>
-  
-  <h2>Tickets</h2>
+
+  <h2>Tickets et Critiques de Livres</h2>
   <ul>
-    {% for ticket in tickets %}
-      <li><a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.book_title }}</a></li>
-      <img src="{{ ticket.book_image.url }}" class="img-fluid">
+    {% for item in combined_list %}
+      <li>
+        {% if item|instanceof:"YourApp.models.BookReviewTicket" %}
+          <a href="{% url 'ticket_detail' item.id %}">{{ item.book_title }}</a>
+          <img src="{{ item.book_image.url }}" class="img-fluid">
+          <p>Date de création : {{ item.date }}</p>  <!-- Ici, j'ai laissé 'date' au lieu de 'created_date' -->
+        {% elif item|instanceof:"YourApp.models.BookReview" %}
+          <a href="{% url 'book_review_detail' item.id %}">{{ item.title }}</a>
+          <p>Date de création : {{ item.date }}</p>  <!-- J'ai laissé 'date' au lieu de 'created_date' ici aussi -->
+        {% endif %}
+      </li>
     {% endfor %}
   </ul>
   <a href="{% url 'create_ticket' %}">Créer un Nouveau Ticket</a>
-
-  <h2>Critiques de Livres</h2>
-  <ul>
-    {% for review in reviews %}
-      <li><a href="{% url 'book_review_detail' review.id %}">{{ review.title }}</a></li>
-    {% endfor %}
-  </ul>
   <a href="{% url 'create_book_review' %}">Ajouter une Critique de Livre</a>
+</div>
 {% endblock %}

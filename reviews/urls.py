@@ -1,11 +1,11 @@
 from django.urls import path
 from . import views
-from .views import HomeListView
+from .views import combined_list
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('home/', HomeListView.as_view(), name='home'),
+    path('home/', views.combined_list, name='home'),
     path('reviews/', views.book_review_list, name='book_review_list'),
     path('reviews/<int:review_id>/', views.book_review_detail, name='book_review_detail'),
     path('reviews/new/', views.create_book_review, name='create_book_review'),

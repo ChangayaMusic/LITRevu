@@ -5,15 +5,26 @@ from django.views.generic import ListView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, UserFollows
-
+from django.views.generic import ListView
+from operator import attrgetter
 from .models import BookReviewTicket, BookReview
 from .forms import BookReviewTicketForm, BookReviewForm
+from django.http import HttpResponse
+import itertools
+
 
 class HomeListView(ListView):
     template_name = "combined_list.html"
 
-    def get_queryset(self) -> QuerySet[Any]:
-        return None
+    def get_queryset(self):
+        # Vous pouvez personnaliser la logique ici pour récupérer les tickets et les critiques que vous souhaitez afficher.
+        queryset = chain(BookReviewTicket.objects.all(), BookReview.objects.all())
+
+        # Utilisez print pour afficher le contenu du queryset (à des fins de débogage)
+        for item in queryset:
+            print(item)  # Vous pouvez personnaliser cette sortie pour afficher les données pertinentes
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,7 +49,14 @@ def book_review_list(request):
 def combined_list(request):
     tickets = BookReviewTicket.objects.all()
     reviews = BookReview.objects.all()
-    return render(request, 'combined_list.html', {'tickets': tickets, 'reviews': reviews})
+
+    combined_list = sorted(
+        itertools.chain(tickets, reviews),
+        key=attrgetter('date'),  # Utilisez attrgetter pour trier par date
+        reverse=True
+    )
+
+    return render(request, 'combined_list.html', {'combined_list': combined_list})
 
 def ticket_detail(request, ticket_id):
     # Retrieve the book review ticket object or return a 404 error if it doesn't exist
