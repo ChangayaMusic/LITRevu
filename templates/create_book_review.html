@@ -1,18 +1,42 @@
-<!-- create_book_review.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Créer une Critique</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="bg-primary p-3 rounded">
+                    <h1 class="text-center text-white mb-4">Créer une Nouvelle Critique de Livre</h1>
+                </div>
 
-    <!-- Formulaire de Ticket -->
-    {% if ticket_form %}
-      {{ ticket_form.as_p }}
-    {% endif %}
+                <div class="card mt-4 border border-primary rounded">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Formulaire de Ticket -->
+                            {% if ticket_form %}
+                                <div class="form-group">
+                                    {{ ticket_form.as_p|safe }}
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                {{ form.as_p|safe }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Soumettre</button>
+                        </form>
+                    </div>
+                </div>
 
-    {{ form.as_p }}
-    <button type="submit">Soumettre</button>
-  </form>
-  <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>
+                <div class="mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-secondary btn-block rounded">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* CSS personnalisé pour le style de la page */
+        .card {
+            border: none;
+        }
+    </style>
 {% endblock %}

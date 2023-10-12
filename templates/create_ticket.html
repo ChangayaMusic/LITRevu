@@ -1,19 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Créer un Nouveau Ticket</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Créer le Ticket</button>
-  </form>
-  <a href="{% url 'combined_list' %}">Retour</a>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="bg-primary p-3 rounded">
+                    <h1 class="text-center text-white mb-4">Créer un Nouveau Ticket</h1>
+                </div>
 
-  {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-  {% endif %}
+                <div class="card mt-4 border border-primary rounded">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary btn-block">Créer le Ticket</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'combined_list' %}" class="btn btn-secondary btn-block rounded">Retour</a>
+                </div>
+
+                {% if messages %}
+                    <ul class="messages mt-4">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* CSS personnalisé pour le style de la page */
+        .card {
+            border: none;
+        }
+    </style>
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Vos Critiques et Tickets</h1>
+
+    <h2>Vos Critiques :</h2>
+    <ul>
+        {% for review in reviews %}
+            <li><a href="{% url 'book_review_detail' review.id %}">{{ review.title }}</a></li>
+            <p>{{ review.text }}</p>
+        {% empty %}
+            <p>Vous n'avez pas encore posté de critiques.</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Vos Tickets :</h2>
+    <ul>
+        {% for ticket in tickets %}
+            <li><a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.book_title }}</a></li>
+            <p>{{ ticket.text }}</p>
+        {% empty %}
+            <p>Vous n'avez pas encore posté de tickets.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

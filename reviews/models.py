@@ -1,8 +1,9 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+
 from django.conf import settings
-from django.db import models
 from login.models import CustomUser
 import os
+from django.db import models
+from django.db.models import Q
 
 def book_image_path(instance, filename):
     # Obtenez le nom du fichier d'origine
@@ -52,3 +53,19 @@ class UserFollows(models.Model):
 
     def __str__(self):
         return f"{self.user.username} follows {self.followed_user.username}"
+
+
+class UserReviewsAndTicketsQuerySet(models.QuerySet):
+    def for_user(self, user):
+        return self.filter(Q(author=user) | Q(user=user))
+
+
+class UserReviewsAndTicketsManager(models.Manager):
+    def get_queryset(self):
+        return UserReviewsAndTicketsQuerySet(self.model, using=self._db)
+
+    def for_user(self, user):
+        return self.get_queryset().for_user(user)
+
+
+

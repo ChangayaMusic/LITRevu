@@ -174,3 +174,15 @@ def response_review(request, ticket_id):
 
     # Affichez la page de réponse avec le formulaire
     return render(request, 'response_review.html', {'form': form, 'ticket': ticket})
+
+
+def user_reviews_and_tickets(request):
+    user = request.user  # L'utilisateur connecté
+    reviews = BookReview.objects.filter(author=user)
+    tickets = BookReviewTicket.objects.filter(user=user)
+
+    context = {
+        'reviews': reviews,
+        'tickets': tickets,
+    }
+    return render(request, 'user_reviews_tickets.html', context)
