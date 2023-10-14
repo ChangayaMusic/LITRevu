@@ -47,16 +47,20 @@ def book_review_list(request):
 
     return render(request, 'combined_list.html', {'book_reviews': book_reviews})
 def combined_list(request):
-    tickets = BookReviewTicket.objects.all()
-    reviews = BookReview.objects.all()
+    # Récupérez tous les tickets et les critiques
+    tickets = list(BookReviewTicket.objects.all())
+    reviews = list(BookReview.objects.all())
 
-    combined_list = sorted(
-        itertools.chain(tickets, reviews),
-        key=attrgetter('date'),  # Utilisez attrgetter pour trier par date
-        reverse=True
-    )
+    # Fusionnez les deux listes en une seule
+    combined_list = tickets + reviews
 
-    return render(request, 'combined_list.html', {'combined_list': combined_list})
+    # Triez la liste combinée par date
+    combined_list.sort(key=lambda item: item.date, reverse=True)
+
+    context = {
+        'combined_list': combined_list,
+    }
+    return render(request, 'combined_list.html', context)
 
 def ticket_detail(request, ticket_id):
     # Retrieve the book review ticket object or return a 404 error if it doesn't exist

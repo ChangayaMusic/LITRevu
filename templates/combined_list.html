@@ -1,45 +1,41 @@
-{% extends 'base.html' %}
-{% load custom_filters %}
+{% extends "base.html" %}
+
 {% block content %}
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="bg-primary p-3 rounded">
-                    <h1 class="text-center text-white mb-4">Liste des Tickets et Critiques de Livres</h1>
-                </div>
-
-                <div class="mt-4">
-                    <a href="{% url 'create_ticket' %}" class="btn btn-secondary btn-block rounded">Créer un Nouveau Ticket</a>
-                    <a href="{% url 'create_book_review' %}" class="btn btn-secondary btn-block rounded">Ajouter une Critique de Livre</a>
-                </div>
-
-                <div class="card mt-4 border border-primary rounded">
-                    <div class="card-body">
-                        <h2 class="border border-primary p-2 rounded">Tickets et Critiques de Livres</h2>
-                        <ul class="list-group">
-                            {% for item in combined_list %}
-                                <li class="list-group-item">
-                                    {% if item|instanceof:"YourApp.models.BookReviewTicket" %}
-                                        <a href="{% url 'ticket_detail' item.id %}">{{ item.book_title }}</a>
-                                        <img src="{{ item.book_image.url }}" class="img-fluid">
-                                        <p>Date de création : {{ item.date }}</p>
-                                    {% elif item|instanceof:"YourApp.models.BookReview" %}
-                                        <a href="{% url 'book_review_detail' item.id %}">{{ item.title }}</a>
-                                        <p>Date de création : {{ item.date }}</p>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="bg-primary p-3 rounded-top">
+                <h1 class="text-center text-white mb-4">Combined List of Tickets and Reviews</h1>
             </div>
+
+            <ul class="list-group mt-4">
+                {% for item in combined_list %}
+                    <li class="list-group-item border border-3">
+                        <div>
+                            {% if item.book_title %}
+                                <h2><strong>{{ item.book_title }}</strong></h2>
+                                <p>Author: {{ item.book_author }}</p>
+                            {% endif %}
+                            <p>Date: {{ item.date }}</p>
+                            {% if item.text %}
+                                <div class="border rounded bg-light p-3">
+                                    <p>{{ item.text }}</p>
+                                    <p>Posted by: {{ item.user.username }}</p>
+                                </div>
+                            {% endif %}
+                            {% if item.rating %}
+                                <p>Rating: {{ item.rating }}/5</p>
+                            {% endif %}
+                        </div>
+                        <div class="float-right">
+                            {% if item.book_image %}
+                                <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
-<style>
-    /* CSS personnalisé pour le style de la page */
-    .card {
-        border: none;
-    }
-</style>
 {% endblock %}
