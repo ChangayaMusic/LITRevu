@@ -3,32 +3,68 @@
 {% block content %}
   {{ block.super }}
 
-  <h2>Répondre avec une Critique</h2>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="bg-primary p-3 rounded-top">
+          <h1 class="text-center text-white mb-4">Répondre avec une Critique</h1>
+        </div>
 
-  <!-- Afficher les messages flash ici -->
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-    </ul>
+        <div class="my-4"> <!-- Ajout de marge autour du contenu -->
+          <!-- Afficher les messages flash ici -->
+          {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="title">Titre :</label>
+              <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="rating">Note :</label>
+              <select id="rating" name "rating" class="form-control" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="text">Commentaire :</label>
+              <textarea id="text" name="text" class="form-control" rows="4" required></textarea>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-4"> <!-- Ajout de la marge autour des boutons -->
+              <button type="submit" class="btn btn-primary">Soumettre la Critique</button>
+              <a href="{% url 'home' %}" class="btn btn-primary">Retour à l'Accueil</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if review %}
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <!-- Afficher la critique ici -->
+          <div class="bg-secondary p-3 rounded-top">
+            <h1 class="text-center text-white mb-4">Critique</h1>
+          </div>
+          <div class="bg-light p-3 rounded-bottom">
+            <h2>Titre de la Critique : {{ review.title }}</h2>
+            <p>Note : {{ review.rating }}</p>
+            <p>Commentaire : {{ review.text }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
-
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for="title">Titre :</label>
-    <input type="text" id="title" name="title" required><br>
-    <label for="rating">Note :</label>
-    <select id="rating" name="rating" required>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select><br>
-    <label for="text">Commentaire :</label>
-    <textarea id="text" name="text" rows="4" cols="50" required></textarea><br>
-    <button type="submit">Soumettre la Critique</button>
-  </form>
 </div>
 {% endblock %}

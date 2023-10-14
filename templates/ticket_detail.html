@@ -1,14 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Détail du Ticket</h1>
-  <h2>{{ ticket.title }}</h2>
-  <p>Auteur du Ticket : {{ ticket.user }}</p>
-  <p>Date et Heure de Création : {{ ticket.date }}</p>
-  <p>Livre : {{ ticket.book_title }} par {{ ticket.book_author }}</p>
-  <p>Description du Ticket : {{ ticket.text }}</p>
-  <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" />
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="ticket-details bg-light p-4">
+          <h1 class="mb-3">Détail du Ticket</h1> <!-- Ajout de la classe mb-3 ici -->
+          <h2>{{ ticket.title }}</h2>
+          <p>Auteur du Ticket : {{ ticket.user }}</p>
+          <p>Date et Heure de Création : {{ ticket.date }}</p>
+          <p>Livre : {{ ticket.book_title }} par {{ ticket.book_author }}</p>
+          <p>Description du Ticket : {{ ticket.text }}</p>
+          <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" class="img-fluid mb-3">
 
-  <a href="{% url 'ticket_list' %}">Retour à la Liste des Tickets</a>
-  <a href="{% url 'response_review' ticket.id %}">Répondre avec une Critique</a>
+          <div class="d-flex justify-content-between">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

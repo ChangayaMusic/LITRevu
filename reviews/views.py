@@ -9,7 +9,8 @@ from django.views.generic import ListView
 from operator import attrgetter
 from .models import BookReviewTicket, BookReview
 from .forms import BookReviewTicketForm, BookReviewForm
-from django.http import HttpResponse
+
+
 import itertools
 
 
@@ -180,13 +181,41 @@ def response_review(request, ticket_id):
     return render(request, 'response_review.html', {'form': form, 'ticket': ticket})
 
 
-def user_reviews_and_tickets(request):
-    user = request.user  # L'utilisateur connecté
-    reviews = BookReview.objects.filter(author=user)
-    tickets = BookReviewTicket.objects.filter(user=user)
+def user_reviews_tickets(request):
+    # Récupérez les tickets et les critiques de l'utilisateur connecté
+    user_reviews = BookReview.objects.filter(author=request.user)
+    user_tickets = BookReviewTicket.objects.filter(user=request.user)
 
-    context = {
-        'reviews': reviews,
-        'tickets': tickets,
-    }
-    return render(request, 'user_reviews_tickets.html', context)
+    return render(request, 'user_reviews_tickets.html', {
+        'user_reviews': user_reviews,
+        'user_tickets': user_tickets,
+    })
+
+def modify_review(request, review_id):
+    review = get_object_or_404(BookReview, id=review_id)
+
+    if request.method == 'POST':
+        form = BookReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('combined_list')  # Redirigez l'utilisateur vers la liste combinée après la modification
+
+    else:
+        form = BookReviewForm(instance=review)
+
+    return render(request, 'modify_review.html', {'form': form, 'review': review})
+
+
+def modify_ticket(request, ticket_id):
+    ticket = get_object_or_404(BookReviewTicket, id=ticket_id)
+
+    if request.method == 'POST':
+        form = BookReviewTicketForm(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            return redirect('user_reviews_tickets')  # Redirigez l'utilisateur vers la liste combinée après la modification
+
+    else:
+        form = BookReviewTicketForm(instance=ticket)
+
+    return render(request, 'modify_ticket.html', {'form': form, 'ticket': ticket})

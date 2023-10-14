@@ -16,7 +16,10 @@ urlpatterns = [
     path('ticket-confirmation/', views.ticket_confirmation, name='ticket_confirmation'),
     path('manage_followers/', views.manage_followers, name='manage_followers'),
     path('response_review/<int:ticket_id>/', views.response_review, name='response_review'),
-    path('user_reviews_tickets/', views.user_reviews_and_tickets, name='user_reviews_tickets'),
+    path('user-reviews-tickets/', views.user_reviews_tickets, name='user_reviews_tickets'),
+    path('modify_review/<int:review_id>/', views.modify_review, name='modify_review'),
+    path('modify_ticket/<int:ticket_id>/', views.modify_ticket, name='modify_ticket'),
+
 
 ]
 if settings.DEBUG:

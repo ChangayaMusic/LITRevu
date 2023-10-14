@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="bg-primary p-3 rounded-top">
+                <h1 class="text-center text-white mb-4">Modify Ticket</h1>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+            <a href="{% url 'combined_list' %}" class="btn btn-secondary mt-3">Cancel</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -32,6 +32,11 @@
                                 <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
                             {% endif %}
                         </div>
+                        <div class="text-center mt-3">
+                            {% if not item.book_title and not item.has_review %} {# Utilisez un attribut "has_review" pour vérifier si le ticket a déjà une critique #}
+                                <a href="{% url 'response_review' item.id %}" class="btn btn-primary">Response</a>
+                            {% endif %}
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
