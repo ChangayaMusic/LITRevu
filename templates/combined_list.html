@@ -5,56 +5,95 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="bg-primary p-3 rounded-top">
-                <h1 class="text-center text-white mb-4">Combined List of Tickets and Reviews</h1>
+                <h1 class="text-center text-white mb-4">Flux des tickets et reviews</h1>
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
-                <div class="container text-center">
+            <div class="d-flex justify-content-between mt-4">
+                <div class="container text-center mb-0">
                     <a href="{% url 'create_ticket' %}" class="btn btn-primary">Ecrire un ticket</a>
                 </div>
 
-                <div class="container text-center">
+                <div class="container text-center mb-0">
                     <a href="{% url 'create_book_review' %}" class="btn btn-primary">Ecrire une critique</a>
                 </div>
             </div>
 
             <ul class="list-group mt-4">
                 {% for item in combined_list %}
-                    <li class="list-group-item border border-3">
-                        <div>
-                            {% if item.book_title %}
-                                <h2><strong>Ticket de {{ item.book_title }}</strong></h2>
-                                <p>Auteur: {{ item.book_author }}</p>
-                            {% else %}
-                                <h2><strong>Review de {{ item.ticket.book_title }}</strong></h2>
-                                <p>Auteur: {{ item.ticket.book_author }}</p>
-                            {% endif %}
-                            <p>Date: {{ item.date }}</p>
-                            {% if item.text %}
+                    {% if item.ticket %}
+                        <li class="list-group-item border border-3 mb-3 bg-light">
+                            <div class="list-group-item border-2">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p> {% if item.user.username %}{{ item.user.username }}{% else %}{{ item.author }}{% endif %} a écrit la critique</p>
+                                    </div>
+                                    <div>
+                                        <p>Date: {{ item.date }}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+    <h2><strong>{{ item.title }}</strong></h2>
+    <span class="star-rating">
+        {% for _ in "x"|ljust:item.rating %}
+            <i class="fas fa-star"></i>
+        {% endfor %}
+    </span>
+</div>
+
                                 <div class="border rounded bg-light p-3">
                                     <p>{{ item.text }}</p>
-                                    <p>Posted by: {% if item.user.username %}{{ item.user.username }}{% else %}{{ item.author }}{% endif %}</p>
-
-
                                 </div>
-                            {% endif %}
-                            {% if item.rating %}
-                                <p>Rating: {{ item.rating }}/5</p>
-                            {% endif %}
-                        </div>
-                        <div class="float-right">
-                            {% if item.book_image %}
-                                <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid mt-3" style="max-width: 150px;">
-                            {% endif %}
 
-                        </div>
-                        <div class="text-center mt-3">
-
-                            {% if item.user and not item.bookreview_set.all %}
-                                <a href="{% url 'response_review' item.id %}" class="btn btn-primary">Répondre</a>
-                            {% endif %}
-                        </div>
-                    </li>
+                            </div>
+                            <ul class="list-group mt-4">
+                                <li class="list-group-item border border-2 mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="left-content">
+                                            <p class="mb-0">{% if item.ticket.user.username %}{{ item.ticket.user.username }}{% else %}{{ item.author }}{% endif %} a demandé une review</p>
+                                        </div>
+                                        <div class="right-content">
+                                            <p class="mb-0">Date: {{ item.ticket.date }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="left-content">
+                                            <p>{{ item.ticket.book_title }} - {{ item.ticket.book_author }}</p>
+                                        </div>
+                                        <div class="right-content">
+                                            <!-- Laissez cet espace vide pour aligner correctement les éléments -->
+                                        </div>
+                                    </div>
+                                    <div class="border rounded bg-light p-3">
+                                        <p>{{ item.ticket.text }}</p>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <img src="{{ item.ticket.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item border border-4 mb-3">
+                            <div>
+                                <p>{% if item.user.username %}{{ item.user.username }}{% else %}{{ item.author }}{% endif %} a demandé une review</p>
+                                <p>Date: {{ item.date }}</p>
+                                <p>{{ item.book_title }} - {{ item.book_author }}</p>
+                                <div class="border rounded bg-light p-3">
+                                    <p>{{ item.text }}</p>
+                                </div>
+                                <span class="star-rating">
+                                    {% for _ in "x"|ljust:item.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                </span>
+                                {% if item.book_image %}
+                                    <div class="text-center mt-3">
+                                        <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
