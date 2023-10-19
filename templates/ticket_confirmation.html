@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Ticket Created</h1>
-  <p>Your ticket has been successfully created.</p>
-  <!-- You can provide additional details or links here if needed -->
-  <a href="{% url "home" %}">Return to home</a>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="bg-primary p-3 rounded-top">
+                <h1 class="text-center text-white mb-4">C'est validé !</h1>
+            </div>
+
+            <div class="bg-light p-4">
+                <p>Votre saisie a bien été sauvegardée.</p>
+                <!-- You can provide additional details or links here if needed -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-primary">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

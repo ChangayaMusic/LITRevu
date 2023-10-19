@@ -8,19 +8,34 @@
                 <h1 class="text-center text-white mb-4">Combined List of Tickets and Reviews</h1>
             </div>
 
+            <div class="d-flex justify-content-center mt-4">
+                <div class="container text-center">
+                    <a href="{% url 'create_ticket' %}" class="btn btn-primary">Ecrire un ticket</a>
+                </div>
+
+                <div class="container text-center">
+                    <a href="{% url 'create_book_review' %}" class="btn btn-primary">Ecrire une critique</a>
+                </div>
+            </div>
+
             <ul class="list-group mt-4">
                 {% for item in combined_list %}
                     <li class="list-group-item border border-3">
                         <div>
                             {% if item.book_title %}
-                                <h2><strong>{{ item.book_title }}</strong></h2>
-                                <p>Author: {{ item.book_author }}</p>
+                                <h2><strong>Ticket de {{ item.book_title }}</strong></h2>
+                                <p>Auteur: {{ item.book_author }}</p>
+                            {% else %}
+                                <h2><strong>Review de {{ item.ticket.book_title }}</strong></h2>
+                                <p>Auteur: {{ item.ticket.book_author }}</p>
                             {% endif %}
                             <p>Date: {{ item.date }}</p>
                             {% if item.text %}
                                 <div class="border rounded bg-light p-3">
                                     <p>{{ item.text }}</p>
-                                    <p>Posted by: {{ item.user.username }}</p>
+                                    <p>Posted by: {% if item.user.username %}{{ item.user.username }}{% else %}{{ item.author }}{% endif %}</p>
+
+
                                 </div>
                             {% endif %}
                             {% if item.rating %}
@@ -29,12 +44,14 @@
                         </div>
                         <div class="float-right">
                             {% if item.book_image %}
-                                <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
+                                <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid mt-3" style="max-width: 150px;">
                             {% endif %}
+
                         </div>
                         <div class="text-center mt-3">
-                            {% if not item.book_title and not item.has_review %} {# Utilisez un attribut "has_review" pour vérifier si le ticket a déjà une critique #}
-                                <a href="{% url 'response_review' item.id %}" class="btn btn-primary">Response</a>
+
+                            {% if item.user and not item.bookreview_set.all %}
+                                <a href="{% url 'response_review' item.id %}" class="btn btn-primary">Répondre</a>
                             {% endif %}
                         </div>
                     </li>

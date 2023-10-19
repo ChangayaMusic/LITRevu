@@ -26,6 +26,7 @@ class BookReviewTicket(models.Model):
     text = models.TextField()
     book_image = models.ImageField(upload_to=book_image_path)
 
+
     def __str__(self):
         return self.book_title
 

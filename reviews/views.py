@@ -155,29 +155,28 @@ def manage_followers(request):
     return render(request, 'manage_followers.html', {'following': following, 'followers': followers})
 
 def response_review(request, ticket_id):
-    # Récupérer l'objet Ticket en fonction de l'ID
     ticket = get_object_or_404(BookReviewTicket, pk=ticket_id)
+    print(ticket.id)
 
     if request.method == 'POST':
-        # Si le formulaire est soumis, traiter les données du formulaire
         form = BookReviewForm(request.POST)
         if form.is_valid():
-            # Si le formulaire est valide, enregistrez la critique associée au ticket
             review = form.save(commit=False)
-            review.author = request.user  # Vous devrez peut-être ajuster cela en fonction de la manière dont vous gérez les auteurs
+            review.author = request.user
+            print(review.author)
             review.ticket = ticket
+
             review.save()
-
-            # Enregistrez le message flash de succès
             messages.success(request, 'Votre critique a été enregistrée avec succès.')
-
-            # Redirigez l'utilisateur vers une page de confirmation ou ailleurs
-            return redirect('ticket_detail', ticket_id=ticket_id)
+            return redirect('ticket_confirmation')
+        else:
+            # Handle form validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'Error in {field}: {error}')
     else:
-        # Si c'est une requête GET, affichez le formulaire vide
         form = BookReviewForm()
 
-    # Affichez la page de réponse avec le formulaire
     return render(request, 'response_review.html', {'form': form, 'ticket': ticket})
 
 

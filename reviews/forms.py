@@ -7,9 +7,6 @@ class BookReviewTicketForm(forms.ModelForm):
         model = BookReviewTicket
         fields = ['book_title', 'book_author', 'text', 'book_image']
 
-# forms.py
-
-
 class BookReviewForm(forms.ModelForm):
     class Meta:
         model = BookReview
