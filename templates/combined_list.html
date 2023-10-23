@@ -82,14 +82,20 @@
                                     <p>{{ item.text }}</p>
                                 </div>
                                 <span class="star-rating">
-                                    {% for _ in "x"|ljust:item.rating %}
-                                        <i class="fas fa-star"></i>
-                                    {% endfor %}
-                                </span>
+    {% if item.star_rating %}
+        {% for _ in "x"|ljust:item.star_rating %}
+            <i class="fas fa-star"></i>
+        {% endfor %}
+    {% endif %}
+</span>
+
                                 {% if item.book_image %}
                                     <div class="text-center mt-3">
                                         <img src="{{ item.book_image.url }}" alt="Book Image" class="img-fluid" style="max-width: 150px;">
                                     </div>
+                                {% endif %}
+                                {% if item.user and not item.bookreview_set.all %}
+                                <a href="{% url 'response_review' item.id %}" class="btn btn-primary">Répondre</a>
                                 {% endif %}
                             </div>
                         </li>

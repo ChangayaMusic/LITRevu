@@ -5,19 +5,27 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="ticket-details bg-light p-4">
-          <h1 class="mb-3">Détail du Ticket</h1> <!-- Ajout de la classe mb-3 ici -->
+          <h1 class="mb-3">Détail du Ticket</h1>
           <h2>{{ ticket.title }}</h2>
           <p>Auteur du Ticket : {{ ticket.user }}</p>
           <p>Date et Heure de Création : {{ ticket.date }}</p>
           <p>Livre : {{ ticket.book_title }} par {{ ticket.book_author }}</p>
           <p>Description du Ticket : {{ ticket.text }}</p>
-          <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" class="img-fluid mb-3">
+          <img src="{{ ticket.book_image.url }}" alt="{{ ticket.book_title }}" class="img-fluid mb-3 custom-img-class">
 
           <div class="d-flex justify-content-between">
-
+            <!-- Vos autres éléments ici -->
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <style>
+    .custom-img-class {
+      max-width: 150px;
+    }
+
+    /* Ajoutez ici d'autres règles CSS personnalisées si nécessaire */
+  </style>
 {% endblock %}
