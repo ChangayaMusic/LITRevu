@@ -11,7 +11,7 @@ from .models import BookReviewTicket, BookReview
 from .forms import BookReviewTicketForm, BookReviewForm
 
 
-import itertools
+from itertools import chain
 
 
 class HomeListView(ListView):
@@ -117,10 +117,10 @@ def create_book_review(request):
 
     if request.method == 'POST':
         if ticket:
-            ticket_form = BookReviewTicketForm(request.POST, instance=ticket)
+            ticket_form = BookReviewTicketForm(request.POST, request.FILES, instance=ticket)
             form = BookReviewForm(request.POST)
         else:
-            ticket_form = BookReviewTicketForm(request.POST)
+            ticket_form = BookReviewTicketForm(request.POST, request.FILES)
             form = BookReviewForm(request.POST)
 
         if form.is_valid() and ticket_form.is_valid():

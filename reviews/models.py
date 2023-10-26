@@ -23,7 +23,7 @@ class BookReviewTicket(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     book_title = models.CharField(max_length=255)
     book_author = models.CharField(max_length=255)
-    text = models.TextField()
+    request_text = models.TextField()
     book_image = models.ImageField(upload_to=book_image_path)
 
 

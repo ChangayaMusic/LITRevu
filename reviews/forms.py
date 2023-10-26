@@ -5,7 +5,7 @@ from .models import BookReview
 class BookReviewTicketForm(forms.ModelForm):
     class Meta:
         model = BookReviewTicket
-        fields = ['book_title', 'book_author', 'text', 'book_image']
+        fields = ['book_title', 'book_author', 'request_text', 'book_image']
 
 class BookReviewForm(forms.ModelForm):
     class Meta:
