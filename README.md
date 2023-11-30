@@ -62,12 +62,14 @@ LITRevu est une plateforme interactive dédiée aux critiques de livres et d'art
 
 ## Spécifications Techniques
 
-Framework : Django
-Base de Données : SQLite (fichier db.sqlite3 inclus dans le repository)
-Conception de Base de Données : Suivre le schéma fourni
-Conformité PEP8 : Respecter les directives de la PEP8
-Contribution
-Nous accueillons les contributions ! Consultez notre guide de contribution CONTRIBUTING.md pour plus d'informations.
+-Framework : Django
+-Base de Données : SQLite (fichier db.sqlite3 inclus dans le repository)
+-Conception de Base de Données : Suivre le schéma fourni
+-Conformité PEP8 : Respecter les directives de la PEP8
+
+## Contribution
+
+Nous accueillons les contributions ! 
 
 ## Auteurs
 
