@@ -35,8 +35,8 @@ LITRevu est une plateforme interactive dédiée aux critiques de livres et d'art
 
 ## Captures d'écran
 
-![Capture d'écran 1]([lien_vers_capture1.png](https://image.noelshack.com/fichiers/2023/48/4/1701345590-opera-instantane-2023-11-30-125920-127-0-0-1.png))
-![Capture d'écran 2]([lien_vers_capture2.png](https://image.noelshack.com/fichiers/2023/48/4/1701345597-opera-instantane-2023-11-30-123140-127-0-0-1.png))
+![Capture d'écran 1]([https://image.noelshack.com/fichiers/2023/48/4/1701345590-opera-instantane-2023-11-30-125920-127-0-0-1.png]
+![Capture d'écran 2]([https://image.noelshack.com/fichiers/2023/48/4/1701345597-opera-instantane-2023-11-30-123140-127-0-0-1.png]
 
 ## Installation et Développement
 
