@@ -47,18 +47,18 @@ LITRevu est une plateforme interactive dédiée aux critiques de livres et d'art
    git clone https://github.com/ChangayaMusic/LITRevu.git
 
 2. **Installer les Dépendances :**
-
-cd LITRevu
-pip install -r requirements.txt
+   ```bash
+   cd LITRevu
+   pip install -r requirements.txt
 
 3. **Appliquer les Migrations :**
-
-python manage.py migrate
+   ```bash
+   python manage.py migrate
 
 4. **Lancer le Serveur de Développement :**
-
-python manage.py runserver
-Accédez à l'application à l'adresse http://localhost:8000.
+   ```bash
+   python manage.py runserver
+   Accédez à l'application à l'adresse http://localhost:8000.
 
 ## Spécifications Techniques
 
